@@ -1,0 +1,616 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApplication1.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta http-equiv="refresh" content="100">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title  %></title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <style>
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        .topnav {
+            background-color: #323776;
+            position: relative;
+            height: 120px;
+            width: auto;
+        }
+        #overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;   
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2;
+            cursor: pointer;
+        }
+        #mySidenav{
+              z-index: 100000;
+            }
+                        /* Hide the links inside the navigation menu (except for logo/home) */
+            .topnav #myLinks {
+                display: none;
+                position: absolute;
+                background-color: rgba(3, 3, 3, 0.4);
+                left: 0;
+                top: 0;
+                height: 1000px;
+                width: 120%;
+                transition: width 2s ease-in;
+            }
+
+                .topnav #myLinks:hover {
+                    width: 300%;
+                }
+
+                .topnav #myLinks a {
+                    margin-left: 30px;
+                    font-weight: bold;
+                }
+
+                    .topnav #myLinks a img {
+                        margin-right: 15px;
+                    }
+
+                    .topnav #myLinks a:hover {
+                        background-color: #1F2248;
+                        color: white;
+                    }
+            /* Style navigation menu links */
+            .topnav a {
+                color: white;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+                display: block;
+            }
+
+                /* Style the hamburger menu */
+                .topnav a.icon {
+                    display: block;
+                    position: absolute;
+                    left: 5px;
+                    top: 39px;
+                }
+
+        #name {
+            color: white;
+        }
+
+        #pm {
+            margin-left: 50px;
+            font-size: 15px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            background-color: #323776;
+            width: auto;
+        }
+
+        .master-active {
+            color: white;
+        }
+
+        footer {
+            height: 300px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+            footer div div a {
+                color: #FFFFFF;
+                margin: auto;
+            }
+
+            footer div div:last-child {
+                background-color: #2DA3F9;
+                width: 170px;
+                height: 44px;
+                border-radius: 5px;
+                text-align: center;
+                padding: 5px 0px;
+                margin-left: 24px;
+            }
+
+                footer div div:last-child:hover {
+                    background-color: #000000;
+                }
+
+            footer div div:first-child:hover {
+                background-color: #000000;
+            }
+
+            footer div {
+                display: flex;
+            }
+
+            footer > div:nth-child(1) {
+                margin-top: 36px;
+                margin-left: 65px;
+            }
+                            
+
+
+        .pagination {
+            display: inline-block;
+        }
+
+               .pagination a{
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+                border: 1px solid #ddd;
+            }
+
+                .pagination a.master-active  {
+                    background-color: #323776;
+                    color: white;
+                    border: 1px solid #323776
+                }
+
+                .pagination a:hover:not(.master-active){
+                    background-color: #ddd;
+                }
+
+                .pagination a:first-child {
+                    border-top-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
+                }
+
+                .pagination a:last-child {
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                }
+
+                
+
+        footer > div:nth-child(2) {
+            margin-top: 36px;
+            margin-right: 76px;
+        }
+
+        .liststyle:nth-child(1) {
+            border-left: 1px solid #000000;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 1s;
+            padding-top: 60px;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #bd2130;
+                    background-color: #818181;
+                }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+        .sidenav {
+            background-color: white;
+        }
+
+        .btn-size {
+            width: 170px;
+            height: 44px;
+        }
+
+        .mr-10 {
+            margin-right: 10px;
+        }
+
+        .icon-quanlinhansu {
+            position: absolute;
+            left: 3.82%;
+            right: 94.06%;
+            top: 18.07%;
+            bottom: 78.81%;
+            background: #FFFFFF;
+        }
+
+        .font-menu {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 22px;
+            line-height: 26px;
+        }
+
+        .closebtn2 {
+            position: absolute;
+            top: 30px;
+            left: -25px;
+            font-size: 25px;
+            background-color: white;
+        }
+
+            .closebtn2:hover {
+                background-color: white;
+            }
+
+        .ml-70 {
+            margin-left: 70px;
+        }
+
+
+          .btn-custom {
+            width: 60px;
+            height: 30px;
+        }
+
+        #btn {
+            color: #fff;
+            background-color: #bd2130;
+            border-color: #bd2130;
+            width: 40px;
+            height: 40px;
+        }
+
+        #list {
+            border-bottom: 1px solid black;
+        }
+
+        #main div > h2 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 28px;
+            line-height: 33px;
+            margin-top: 37px;
+            margin-left: 56px;
+        }
+
+        #list {
+            margin-top: 51px;
+            padding-bottom: 22px;
+        }
+
+            #list input:nth-child(1) {
+                margin-left: 87px;
+                width: 200px;
+                height: 44px;
+                border: 1px solid #000000;
+                box-sizing: border-box;
+                border-radius: 3px;
+                padding: 3px 7px;
+            }
+
+            #list input:nth-child(2) {
+                margin-left: 56px;
+                border: 1px solid #000000;
+                box-sizing: border-box;
+                border-radius: 3px;
+                width: 200px;
+                height: 44px;
+                padding: 3px 7px;
+            }
+
+            #list .input4 {
+                margin-left: 56px;
+                border: 1px solid #000000;
+                box-sizing: border-box;
+                border-radius: 3px;
+                width: 200px;
+                height: 44px;
+                padding: 3px 7px;
+            }
+
+            #list select {
+                border: 1px solid #000000;
+                box-sizing: border-box;
+                border-radius: 3px;
+                width: 224px;
+                height: 44px;
+                padding: 3px 7px;
+                margin-left: 56px;
+            }
+
+        .search {
+            width: 110px;
+            height: 44px;
+            background: #05C2C2;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 3px;
+            outline: none;
+            border: 1px solid #05C2C2;
+            cursor: pointer;
+            margin-left: 56px;
+        }
+
+        #MainContent_mytable {
+            height: auto;
+        }
+
+            #MainContent_mytable > div {
+                display: flex;
+                justify-content: space-between;
+                border-radius: 5px;
+                width: 1280px;
+                height: 120px;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                margin: 28px auto;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+        .cell-border {
+            border-left: 1px solid black;
+            width: 22.5%;
+        }
+
+        .cell-text {
+         text-align: center;
+                margin: 15px auto;
+        }
+
+        .cell-checkbox {
+            border: 1px solid #000000;
+            box-sizing: border-box;
+            background-color: #F5F4F4;
+            width: 10%;
+            height: 24px;
+            margin: auto 0;
+        }
+
+        #MainContent_checkall {
+            border: 1px solid #000000;
+            box-sizing: border-box;
+            background-color: #F5F4F4;
+            width: 24px;
+            height: 24px;
+            margin-left: 77px;
+            margin-top: 30px;
+        }
+
+        .btn-edit {
+            background-color: #0C19B6;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 35px;
+        }
+
+            .btn-edit:hover {
+                background-color: #5b65e3;
+            }
+
+            .btn-edit, .btn-edit:hover {
+                border-color: #0C19B6;
+            }
+
+        .btn-delete {
+            background-color: #FE3232;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 35px;
+        }
+
+            .btn-delete:hover {
+                background-color: #f35f5ffa;
+            }
+
+            .btn-delete,
+            .btn-delete:hover {
+                border-color: #FE3232;
+            }
+
+        .btn-parent {
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+        }
+
+        @media screen and (max-width: 1360px) {
+              #list input:nth-child(1){
+                margin-left: 60px;
+                width: 150px;
+              }
+              #list input:nth-child(2){
+                width: 150px;
+              }
+              #list input:nth-child(4){
+
+                width: 150px;
+              }
+              #list{
+                width: 1300px;
+              }
+              #search{
+                width: 150px;
+              }
+            }
+            @media screen and (max-width: 1250px) {
+              header{
+                width: 82em;
+              }
+            }
+            @media screen and (max-height: 450px) {
+              .sidenav {padding-top: 15px;}
+              .sidenav a {font-size: 18px;}
+            }
+    </style>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <header>
+            <div class="topnav" style="position: relative;">
+                <img src="img/Vector (1).png" alt="" style="margin-left: 60px; margin-top: 36px; z-index: 1000000;">
+                <a href="#home" class="master-active" id="pm" style="z-index: 10000;" alt="">Phần mềm quản lý nhân sự</a>
+                <span style="font-size: 30px; cursor: pointer; position: absolute; top: 0; left: 0; margin-top: 41px; margin-left: 10px; color: white;" onclick="openNav()">&#9776;  </span>
+
+                <div id="mySidenav" class="sidenav">
+                    <hr style="margin-top: 40px; border: 1px solid #000000;" />
+                    <a href="javascript:void(0)" class="closebtn2" onclick="closeNav()">&#9776;</a>
+                    <img src="img/Vector (1).png" alt="" id="img1" style="position: absolute; top: 0; left: 0; margin-top: 34px; margin-left: 3.5rem;">
+                    <img src="img/Vector.png" alt="" id="img2" style="position: absolute; top: 10px; left: 0; margin-top: 5rem; margin-left: 3.5rem;">
+
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="Direction_QLiNhanSu" CssClass="font-menu"> <i class="fa fa-address-book-o" aria-hidden="true" style="margin-right: 20px;margin-top: 50px;"></i>
+                        Quản lý tài nhân sự</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="Direction_QLiTaiKhoan" CssClass="font-menu"> <i class="fa fa-users" aria-hidden="true" style="margin-right: 20px;"></i>
+                        Quản lý tài khoản</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="QuanLiHopDongLaoDong" CssClass="font-menu"> <i class="fa  fa-file-text-o" aria-hidden="true" style="margin-right: 20px;"></i>
+                        Quản lý hợp đồng lao động</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="QuanLiChuKy" CssClass="font-menu"> <i class="fa fa-pencil-square" aria-hidden="true" style="margin-right: 20px;"></i>
+                       Chữ ký Template</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="QuanLiChucVu" CssClass="font-menu"> <i class="fa fa-address-card-o" aria-hidden="true" style="margin-right: 20px;"></i>
+                      Quản lý chức vụ</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="QuanLyPhongBan" CssClass="font-menu"> <i class="fa fa-building-o" aria-hidden="true" style="margin-right: 20px;"></i>
+                      Quản lý phòng ban</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="QuanLiMassmailTemplateView" CssClass="font-menu"> <i class="fa fa-envelope-o" aria-hidden="true" style="margin-right: 20px;"></i>
+                       Massmail template</asp:LinkButton>
+                    <asp:LinkButton runat="server" Text="LinkTest" OnClick="QuanLiTheLoaiMassmailTemplate" CssClass="font-menu"> <i class="fa fa-envelope" aria-hidden="true" style="margin-right: 20px;"></i>
+                       Thể loại Massmail template</asp:LinkButton>
+
+                    <asp:Button ID="btnDangXuat" runat="server" OnClick="DangXuat" Text="Đăng Xuất" type="button" CssClass="btn btn-info btn-size ml-70 mt-20" Style="margin-top: 20px;" />
+                </div>
+
+
+            </div>
+            <div style="display: flex;">
+                <div style="margin-top: 51px; margin-right: 31px;">
+                    <a href="#" id="name" runat="server"></a>
+                </div>
+
+                <img src="img/Ellipse 1.png" style="width: 56px; height: 57px; margin-right: 54px; margin-top: 32px;" alt="">
+            </div>
+
+        </header>
+
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+
+        <% if (Page.Title.Contains("Quản Lí"))
+            { %>
+        <footer>
+            <div runat="server" id="footer">
+            </div>
+
+            <div class="pagination">
+                <asp:LinkButton runat="server" ID="PrevPage" Text="&laquo;" OnClick="PrevPageMethod"/>
+                <div runat="server" id="paging" style="display:inline;">
+                    <asp:LinkButton runat="server"  Text="1" OnClick="PrevPageMethod"/>
+                </div>
+                <asp:LinkButton runat="server" ID="NextPage" Text="&raquo;"  OnClick="NextPageMethod"/>
+            </div>
+
+        </footer>
+        <% } %>
+
+         <div id="overlay" onclick="off()"> </div>
+
+    </form>
+
+
+
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "25%";
+            document.getElementById("overlay").style.display = "block";
+            
+
+        }
+
+        /* Close/hide the sidenav */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";   
+            document.getElementById("overlay").style.display = "none";
+        }
+
+
+        $(document).ready(function () {
+            $("#MainContent_mytable #MainContent_checkall").click(function () {
+                if ($("#MainContent_mytable #MainContent_checkall").is(':checked')) {
+                    $("#MainContent_mytable input[type=checkbox]").each(function () {
+                        $(this).prop("checked", true);
+                    });
+
+                } else {
+                    $("#MainContent_mytable input[type=checkbox]").each(function () {
+                        $(this).prop("checked", false);
+                    });
+                }
+            });
+
+            $("[data-toggle=tooltip]").tooltip();
+        });
+
+    </script>
+          
+</body>
+</html>
